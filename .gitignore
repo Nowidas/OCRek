@@ -133,3 +133,4 @@ config.json
 text.txt
 toOCR.png
 /audio
+/.vscode
