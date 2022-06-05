@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Files created by app
+config.json
+text.txt
+toOCR.png
+/audio
