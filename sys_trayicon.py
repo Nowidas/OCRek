@@ -5,9 +5,6 @@
 # Date       : 11 April 2005
 # Notes      : Based on (i.e. ripped off from) Mark Hammond's
 #              win32gui_taskbar.py and win32gui_menu.py demos from PyWin32
-'''TODO
-
-For now, the demo at the bottom shows how to use it...'''
 
 import os
 import sys
