@@ -10,24 +10,24 @@ import tkinter as tk
 import json
 import io
 
-PATH = ''
-jsonPATH = '.\\config.json'
+PATH = ""
+jsonPATH = ".\\config.json"
 
 
 def Filevalidation(path):
-    if path != '' and os.path.isfile(path) and os.access(path, os.R_OK):
+    if path != "" and os.path.isfile(path) and os.access(path, os.R_OK):
         data = pd.read_excel(path, index_col=None)
         # print(data.columns)
-        if (len(data.columns) == 2) and {'Word', 'Tlumaczenie'}.issubset(data.columns):
+        if (len(data.columns) == 2) and {"Word", "Tlumaczenie"}.issubset(data.columns):
             return True
         return False
 
 
 def newExcelFile(tempdir):
     # print('fun:newExcelFile in ', tempdir)
-    df_total = pd.DataFrame(dtype='string', columns=['Word', 'Tlumaczenie'])
+    df_total = pd.DataFrame(dtype="string", columns=["Word", "Tlumaczenie"])
     # df_total = df_total.append({'Word' : word, 'Tlumaczenie' : tlumaczenie} , ignore_index=True)
-    df_total.to_excel(tempdir, index=False, columns=['Word', 'Tlumaczenie'])
+    df_total.to_excel(tempdir, index=False, columns=["Word", "Tlumaczenie"])
     if setPATH(tempdir):
         return True
 
@@ -39,23 +39,23 @@ def initPATH():
         with open(jsonPATH) as json_file:
             conf = json.load(json_file)
             # print(conf)
-            if Filevalidation(conf['PATH']):
-                PATH = conf['PATH']
+            if Filevalidation(conf["PATH"]):
+                PATH = conf["PATH"]
             else:
-                with open(jsonPATH, 'w') as outfile:
-                    json.dump({'PATH': ''}, outfile)
+                with open(jsonPATH, "w") as outfile:
+                    json.dump({"PATH": ""}, outfile)
     else:
         # print ("Either file is missing or is not readable, creating file...")
-        with io.open(os.path.join(jsonPATH), 'w') as db_file:
-            db_file.write(json.dumps({'PATH': ''}))
+        with io.open(os.path.join(jsonPATH), "w") as db_file:
+            db_file.write(json.dumps({"PATH": ""}))
 
 
 def setPATH(path):
     global PATH
     if Filevalidation(path):
-        data = {'PATH': path}
+        data = {"PATH": path}
         PATH = path
-        with open(jsonPATH, 'w') as outfile:
+        with open(jsonPATH, "w") as outfile:
             json.dump(data, outfile)
         return True
     else:
@@ -67,7 +67,13 @@ def ChangeDirWindow(e):
 
     def newExcelFileName():
         currdir = os.getcwd()
-        tempdir = tkinter.filedialog.asksaveasfilename(parent=root, defaultextension=".xlsx", initialdir=currdir, title='Save as', filetypes=(("Excel file", "*.xlsx"), ))
+        tempdir = tkinter.filedialog.asksaveasfilename(
+            parent=root,
+            defaultextension=".xlsx",
+            initialdir=currdir,
+            title="Save as",
+            filetypes=(("Excel file", "*.xlsx"),),
+        )
         if len(tempdir) > 0:
             # print ("You chose %s" % tempdir)
             pass
@@ -78,7 +84,13 @@ def ChangeDirWindow(e):
 
     def ChangeFile_Window():
         currdir = os.getcwd()
-        tempdir = tkinter.filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory', defaultextension=".xlsx", filetypes=(("Excel file", "*.xlsx"), ))
+        tempdir = tkinter.filedialog.askopenfilename(
+            parent=root,
+            initialdir=currdir,
+            title="Please select a directory",
+            defaultextension=".xlsx",
+            filetypes=(("Excel file", "*.xlsx"),),
+        )
         if len(tempdir) > 0:
             pass
             # print ("You chose %s" % tempdir)
@@ -118,7 +130,13 @@ def init_SaveDir():
 
     def newExcelFileName():
         currdir = os.getcwd()
-        tempdir = tkinter.filedialog.asksaveasfilename(parent=root, defaultextension=".xlsx", initialdir=currdir, title='Save as', filetypes=(("Excel file", "*.xlsx"), ))
+        tempdir = tkinter.filedialog.asksaveasfilename(
+            parent=root,
+            defaultextension=".xlsx",
+            initialdir=currdir,
+            title="Save as",
+            filetypes=(("Excel file", "*.xlsx"),),
+        )
         if len(tempdir) > 0:
             # print ("You chose %s" % tempdir)
             pass
@@ -129,7 +147,13 @@ def init_SaveDir():
 
     def ChangeFile_Window():
         currdir = os.getcwd()
-        tempdir = tkinter.filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory', defaultextension=".xlsx", filetypes=(("Excel file", "*.xlsx"), ))
+        tempdir = tkinter.filedialog.askopenfilename(
+            parent=root,
+            initialdir=currdir,
+            title="Please select a directory",
+            defaultextension=".xlsx",
+            filetypes=(("Excel file", "*.xlsx"),),
+        )
         if len(tempdir) > 0:
             pass
             # print ("You chose %s" % tempdir)
@@ -141,7 +165,7 @@ def init_SaveDir():
 
     initPATH()
     # print('Plik zapisu:',PATH)
-    if PATH == '':
+    if PATH == "":
         root = tk.Tk()
         root.withdraw()
 
@@ -167,14 +191,18 @@ def init_SaveDir():
 
 
 def saveToExcel(word, TO_SHOW):
-    if PATH != '' and os.path.isfile(PATH) and os.access(PATH, os.R_OK):
-        tlumaczenie = ' | '.join([wrd[0] for wrd in TO_SHOW if wrd[1]])
+    if PATH != "" and os.path.isfile(PATH) and os.access(PATH, os.R_OK):
+        tlumaczenie = " | ".join([wrd[0] for wrd in TO_SHOW if wrd[1]])
 
-        df_total = pd.DataFrame(dtype='string')
+        df_total = pd.DataFrame(dtype="string")
         excel_file = pd.ExcelFile(PATH)
 
-        df_total = df_total.append(excel_file.parse(sheet_name=excel_file.sheet_names[0]), ignore_index=True)
-        df_total = df_total.append({'Word': word, 'Tlumaczenie': tlumaczenie}, ignore_index=True)
+        df_total = df_total.append(
+            excel_file.parse(sheet_name=excel_file.sheet_names[0]), ignore_index=True
+        )
+        df_total = df_total.append(
+            {"Word": word, "Tlumaczenie": tlumaczenie}, ignore_index=True
+        )
         df_total.to_excel(PATH, index=False)
         return True
     else:

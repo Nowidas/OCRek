@@ -12,11 +12,17 @@ from PIL import ImageOps
 
 import pytesseract
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 from anki import return_diki_word
 from gui import openWindow, openNotFoundWindow
-from windows_logic import init_getmessageinput, getmessageinput, registerKeys, get_TLUMACZ_MOD, get_ON_OFF
+from windows_logic import (
+    init_getmessageinput,
+    getmessageinput,
+    registerKeys,
+    get_TLUMACZ_MOD,
+    get_ON_OFF,
+)
 from sys_trayicon import init_trayicon
 from saving import init_SaveDir
 
@@ -73,16 +79,24 @@ def main():
         # print("|txt-",tmp_value,"|img-",tmp_im,"|")
         # print("==================================")
         ## OCR photo to text if needed
-        if (im is None and type(tmp_im) is PngImagePlugin.PngImageFile) or (type(im) is PngImagePlugin.PngImageFile and type(tmp_im) is PngImagePlugin.PngImageFile and not compare_images(tmp_im, im)):
+        if (im is None and type(tmp_im) is PngImagePlugin.PngImageFile) or (
+            type(im) is PngImagePlugin.PngImageFile
+            and type(tmp_im) is PngImagePlugin.PngImageFile
+            and not compare_images(tmp_im, im)
+        ):
             im = tmp_im
-            im.save('toOCR.png', 'PNG')
+            im.save("toOCR.png", "PNG")
             # print("saved")
             if get_ON_OFF():
                 # sometimes better without greyscale :/
-                ocred_txt = pytesseract.image_to_string(Image.open('toOCR.png'), lang='eng+pol')
+                ocred_txt = pytesseract.image_to_string(
+                    Image.open("toOCR.png"), lang="eng+pol"
+                )
                 pyperclip.copy(ocred_txt.strip())
         ## Grab text and show translated
-        if (recent_value == "" and tmp_value != "") or (tmp_value != "" and recent_value != "" and recent_value != tmp_value):
+        if (recent_value == "" and tmp_value != "") or (
+            tmp_value != "" and recent_value != "" and recent_value != tmp_value
+        ):
             recent_value = tmp_value
             # os.system('cls')
             # print(recent_value.strip())
