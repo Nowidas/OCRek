@@ -14,8 +14,6 @@ import pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-from anki import return_diki_word
-from gui import openWindow, openNotFoundWindow
 from windows_logic import (
     init_getmessageinput,
     getmessageinput,
@@ -24,7 +22,6 @@ from windows_logic import (
     get_ON_OFF,
 )
 from sys_trayicon import init_trayicon
-from saving import init_SaveDir
 
 
 def compare_images(input_image, output_image):
@@ -42,28 +39,9 @@ def compare_images(input_image, output_image):
     return True
 
 
-def tlumacz(tekst):
-    if 0 < len(tekst.split()) <= 2:
-        diki_word = return_diki_word(tekst.strip())
-        return diki_word
-    else:
-        return None
-
-
-def wyswietl(diki_word):
-    if diki_word is not None:
-        print("^^")
-        for tlumaczenie in diki_word["tlumaczenia"]:
-            print(",".join(tlumaczenie["znaczenie"]))
-        print("============================")
-    else:
-        print("!_nie znaleziono_!")
-
-
 def main():
     recent_value = pyperclip.paste()
     im = ImageGrab.grabclipboard()
-    init_SaveDir()
     trayico = init_trayicon()
     msg = init_getmessageinput()
     registerKeys()
@@ -88,7 +66,7 @@ def main():
             im.save("toOCR.png", "PNG")
             # print("saved")
             if get_ON_OFF():
-                # sometimes better without greyscale :/
+                # sometimes better without greyscale
                 ocred_txt = pytesseract.image_to_string(
                     Image.open("toOCR.png"), lang="eng+pol"
                 )
@@ -100,14 +78,6 @@ def main():
             recent_value = tmp_value
             # os.system('cls')
             # print(recent_value.strip())
-            if get_TLUMACZ_MOD() and get_ON_OFF():
-                diki_word = tlumacz(recent_value)
-                # show(diki_word)
-                if diki_word is not None:
-                    # print('openning window..')
-                    openWindow(diki_word)
-                else:
-                    openNotFoundWindow()
 
         time.sleep(0.1)
 

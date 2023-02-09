@@ -17,9 +17,7 @@ try:
 except ImportError:
     import win32gui
 
-from gui import showblankcard
-from windows_logic import get_TLUMACZ_MOD, set_TLUMACZ_MOD, get_ON_OFF, set_ON_OFF
-from saving import ChangeDirWindow
+from windows_logic import get_ON_OFF, set_ON_OFF
 
 # <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 icon = {
@@ -35,19 +33,11 @@ def init_trayicon():
 
     hover_text = "OCR"
 
-    def switch_mode(sysTrayIcon):
-        set_TLUMACZ_MOD(False) if get_TLUMACZ_MOD() else set_TLUMACZ_MOD(True)
-
     def switch_on_off(sysTrayIcon):
         set_ON_OFF(False) if get_ON_OFF() else set_ON_OFF(True)
 
     #   def switch_path(sysTrayIcon): print('switch path TODO')
-    menu_options = (
-        ("Change Mod (Tlum/OCR)", None, switch_mode),
-        ("ON/OFF (F4)", None, switch_on_off),
-        ("Show flashcard (F4 + Shift)", None, lambda x: showblankcard()),
-        ("Switch Save Path", None, ChangeDirWindow),
-    )
+    menu_options = (("ON/OFF (F4)", None, switch_on_off),)
 
     def bye(sysTrayIcon):
         # print ('Bye, then.')
@@ -59,7 +49,7 @@ def init_trayicon():
         hover_text,
         menu_options,
         on_quit=bye,
-        default_menu_index=1,
+        default_menu_index=0,
     )
     return win
 
@@ -136,20 +126,12 @@ class SysTrayIcon(object):
         self.switch_icon_mode()
 
     def switch_icon_mode(self):
-        if get_TLUMACZ_MOD():
-            if get_ON_OFF() and self.icon != icon["on_translation"]:
-                self.icon = icon["on_translation"]
-                self.refresh_icon()
-            elif not get_ON_OFF() and self.icon != icon["off_translation"]:
-                self.icon = icon["off_translation"]
-                self.refresh_icon()
-        elif not get_TLUMACZ_MOD():
-            if get_ON_OFF() and self.icon != icon["on_OCR"]:
-                self.icon = icon["on_OCR"]
-                self.refresh_icon()
-            elif not get_ON_OFF() and self.icon != icon["off_OCR"]:
-                self.icon = icon["off_OCR"]
-                self.refresh_icon()
+        if get_ON_OFF() and self.icon != icon["on_OCR"]:
+            self.icon = icon["on_OCR"]
+            self.refresh_icon()
+        elif not get_ON_OFF() and self.icon != icon["off_OCR"]:
+            self.icon = icon["off_OCR"]
+            self.refresh_icon()
 
     def _add_ids_to_menu_options(self, menu_options):
         result = []
