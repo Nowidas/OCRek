@@ -1,13 +1,15 @@
-# OCRek
+## OCRek
 OCR implementation using Windows clipboard
 
-# Installation:
+### Installation:
 
-- install [tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html "tesseract doc") (change path if needed in main.py):
+- install [tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html  "tesseract doc") (change path if needed in main.py or add optional languages):
 
+- install required packages
 
-- install requred packages
 ```pip install -r requirements.txt```
 
-- create executable file 
+- create executable file
+
 ```pyinstaller main.spec```
+
