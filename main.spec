@@ -30,7 +30,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           windowed=True,
-          console=False , icon='translation.ico')
+          console=False , icon='OCRON.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
