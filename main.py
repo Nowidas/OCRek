@@ -13,6 +13,7 @@ from PIL import ImageOps
 import pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+installed_languages = "eng+pol"  # use '+' as separator
 
 from windows_logic import (
     init_getmessageinput,
@@ -68,7 +69,7 @@ def main():
             if get_ON_OFF():
                 # sometimes better without greyscale
                 ocred_txt = pytesseract.image_to_string(
-                    Image.open("toOCR.png"), lang="eng+pol"
+                    Image.open("toOCR.png"), lang=installed_languages
                 )
                 pyperclip.copy(ocred_txt.strip())
         ## Grab text and show translated
