@@ -133,4 +133,12 @@ config.json
 text.txt
 toOCR.png
 /audio
+
 /.vscode
+
+# Files created by Installation (pyinstaller)
+build/
+dist/
+
+# File needed to quick installation
+!main.spec
